@@ -1,0 +1,1 @@
+create table IF NOT EXISTS Person (id BIGINT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(30), last_name VARCHAR(30));
