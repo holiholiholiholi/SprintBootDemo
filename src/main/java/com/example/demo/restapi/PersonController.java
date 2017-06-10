@@ -49,7 +49,8 @@ public class PersonController {
 		personService.deletePerson(id);
 	}
 	
-	@RequestMapping(path="/update", method = RequestMethod.PATCH)
+	@RequestMapping(path="/update", method = RequestMethod.PATCH,
+			consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseStatus(HttpStatus.OK)
 	public void updatePerson(@RequestBody Person person) {
 		personService.updatePerson(person);;

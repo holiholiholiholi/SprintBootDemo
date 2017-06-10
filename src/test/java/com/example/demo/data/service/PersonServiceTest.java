@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.data.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
