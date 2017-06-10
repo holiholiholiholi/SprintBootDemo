@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.example.demo.DatabaseHelper;
 import com.example.demo.data.bean.Person;
 import com.example.demo.data.service.PersonService;
 
@@ -43,19 +44,22 @@ public class PersonControllerTest {
 	private PersonService personService;
 
 	private MockMvc mvc;
+	
+	private DatabaseHelper dbHelper;
 
 	@Before
 	public void setup() {
+		dbHelper = new DatabaseHelper(personService);
 		mvc = MockMvcBuilders
 				.webAppContextSetup(context)
 				.build();
-		deleteAll();
+		dbHelper.deleteAll();
 	}
 	
 	@Test
 	public void testFindAll() throws Exception {
-		personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
+		personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
 
 		
 		mvc.perform(get("/person/all"))
@@ -69,9 +73,9 @@ public class PersonControllerTest {
 	
 	@Test
 	public void testFindPersonByLastName() throws Exception {
-		personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
-		personService.createNewPerson(createPerson(null, "ying", "li"));
+		personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
+		personService.createNewPerson(dbHelper.createPerson(null, "ying", "li"));
 
 		
 		mvc.perform(get("/person/lastname/li"))
@@ -100,8 +104,8 @@ public class PersonControllerTest {
 	
 	@Test
 	public void testDeletePerson() throws Exception {
-		Person person = personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
+		Person person = personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
 
 		Long id = person.getId();
 		
@@ -117,8 +121,8 @@ public class PersonControllerTest {
 	
 	@Test
 	public void testUpdatePerson() throws Exception {
-		Person person = personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
+		Person person = personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
 
 		mvc.perform(patch("/person/update")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -134,8 +138,8 @@ public class PersonControllerTest {
 	
 	@Test
 	public void testUpdatePerson400ShouldBeReturnedIfPersonIdIsMissing() throws Exception {
-		Person person = personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
+		Person person = personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
 		
 		mvc.perform(patch("/person/update")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -151,8 +155,8 @@ public class PersonControllerTest {
 	
 	@Test
 	public void testUpdatePerson404ShouldBeReturnedIfPersonIdDoesNotExist() throws Exception {
-		Person person = personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
+		Person person = personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
 		
 		Long invalidPersonId = -1L;
 		
@@ -166,19 +170,5 @@ public class PersonControllerTest {
 		person =personList.get(0);
 		assertThat("wangjun", is(person.getFirstName()));
 		assertThat("shi", is(person.getLastName()));
-	}
-	
-	private void deleteAll() {
-		personService.findAll().stream().map(person -> person.getId()).forEach(personService::deletePerson);
-	}
-	
-	private Person createPerson(final Long id, final String firstName, final String lastName){
-		final Person person = new Person();
-		if(id != null) {
-			person.setId(id);
-		}
-		person.setFirstName(firstName);
-		person.setLastName(lastName);
-		return person;
 	}
 }

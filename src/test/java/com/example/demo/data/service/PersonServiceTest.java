@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.example.demo.DatabaseHelper;
 import com.example.demo.data.bean.Person;
 import com.example.demo.data.service.PersonService;
 import com.example.demo.exception.BadRequestException;
@@ -25,11 +26,14 @@ public class PersonServiceTest {
 	@Autowired
 	private PersonService personService;
 	
+	private DatabaseHelper dbHelper;
+	
 	@Before
 	public void setup() {
-		deleteAll();
-		personService.createNewPerson(createPerson(null, "wangjun", "shi"));
-		personService.createNewPerson(createPerson(null, "hong", "li"));
+		dbHelper = new DatabaseHelper(personService);
+		dbHelper.deleteAll();
+		personService.createNewPerson(dbHelper.createPerson(null, "wangjun", "shi"));
+		personService.createNewPerson(dbHelper.createPerson(null, "hong", "li"));
 	}
 	
 	@Test
@@ -45,13 +49,13 @@ public class PersonServiceTest {
 	
 	@Test
 	public void testDelete() {
-		deletePersonByLastname("shi");
+		dbHelper.deletePersonByLastname("shi");
 		
 		assertThat(1, is(personService.findAll().size()));
 		assertThat(1, is(personService.findByLastName("li").size()));
 		assertThat(0, is(personService.findByLastName("shi").size()));
 		
-		deletePersonByLastname("li");
+		dbHelper.deletePersonByLastname("li");
 		assertThat(0, is(personService.findAll().size()));
 	}
 	
@@ -90,25 +94,5 @@ public class PersonServiceTest {
 		Person person = personService.findByLastName("shi").get(0);
 		person.setId(-1L);
 		personService.updatePerson(person);
-	}
-	
-	private void deleteAll() {
-		personService.findAll().stream().map(person -> person.getId()).forEach(personService::deletePerson);
-	}
-	
-	private void deletePersonByLastname(final String lastName) {		
-		personService.findByLastName(lastName).stream()
-			.map(person -> person.getId())
-			.forEach(personService::deletePerson);
-	}
-	
-	private Person createPerson(final Long id, final String firstName, final String lastName){
-		final Person person = new Person();
-		if(id != null) {
-			person.setId(id);
-		}
-		person.setFirstName(firstName);
-		person.setLastName(lastName);
-		return person;
 	}
 }
