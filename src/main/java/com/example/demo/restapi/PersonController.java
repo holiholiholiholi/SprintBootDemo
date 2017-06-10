@@ -15,13 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.data.bean.Person;
 import com.example.demo.data.service.PersonService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @RequestMapping(path="/person")
+@Api(value="/person", description = "operations for person")
 public class PersonController {
 	@Autowired
 	private PersonService personService;
 	
+    @ApiOperation(httpMethod = "GET", value = "findAll", nickname = "findAll")
 	@RequestMapping(path = "/all", method = RequestMethod.GET, 
 			produces = {MediaType.APPLICATION_JSON_UTF8_VALUE} )
 	@ResponseStatus(HttpStatus.OK)
