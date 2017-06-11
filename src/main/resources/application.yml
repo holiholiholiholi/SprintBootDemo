@@ -29,6 +29,8 @@ banner:
     location: banner.png
 
 spring:
+  jmx:
+    enabled: true
   jpa:
     database: MYSQL
     hibernate:

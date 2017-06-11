@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.annotation.Timed;
@@ -13,10 +15,16 @@ import com.example.demo.data.repository.PersonRepository;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
+@ManagedResource(objectName = "Demo:type=JMX,name=PersonService")
 public class PersonService {
 	@Autowired 
 	private PersonRepository personRepository;
+	
+	
 	
 	@Timed
 	public List<Person> findAll() {
@@ -54,6 +62,11 @@ public class PersonService {
 			oldPerson.setLastName(person.getLastName());
 		}
 		return personRepository.save(oldPerson);
+	}
+	
+	@ManagedOperation
+	public void logMessage(final String msg) {
+		log.info("message from MBean: {}", msg);
 	}
 	
 	private void checkIfPersonIdIsNull(final Person person) {
