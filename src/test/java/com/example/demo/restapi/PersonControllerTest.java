@@ -35,7 +35,7 @@ import com.example.demo.data.service.PersonService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-@TestPropertySource("classpath:/application-test.properties")
+@TestPropertySource("classpath:/application-test.yml")
 public class PersonControllerTest {
 	@Autowired
 	private WebApplicationContext context;

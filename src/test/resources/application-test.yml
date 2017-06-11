@@ -1,0 +1,24 @@
+demo:
+  datasource:
+    url:  jdbc:h2:mem:testdb
+    username: sa
+    password: 
+    driver-class-name:  org.h2.Driver
+    validation-query: SELECT 1
+    max-active: 500
+    max-idle: 10
+    min-idle: 10
+    initial-size: 30
+    test-on-borrow: true
+    test-on-return: false
+
+spring:
+  datasource:
+    platform:h2
+
+spring:
+  jpa:
+    database: H2
+    hibernate:
+      dialect:  org.hibernate.dialect.H2Dialect
+

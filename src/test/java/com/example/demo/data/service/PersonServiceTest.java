@@ -20,7 +20,7 @@ import com.example.demo.exception.NotFoundException;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@TestPropertySource("classpath:/application-test.properties")
+@TestPropertySource("classpath:/application-test.yml")
 public class PersonServiceTest {
 
 	@Autowired

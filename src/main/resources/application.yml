@@ -1,0 +1,38 @@
+server:
+  port:  8000
+  contextPath: /demo
+
+endpoints:
+  health:
+    sensitive:  false
+    
+management:
+  security:
+    enabled:  false
+
+demo:
+  datasource:
+    url:  jdbc:mysql://localhost:3306/demo
+    username: root
+    password:
+    driver-class-name:  com.mysql.jdbc.Driver
+    validation-query: SELECT 1
+    max-active: 500
+    max-idle: 10
+    min-idle: 10
+    initial-size: 30
+    test-on-borrow: true
+    test-on-return: false
+
+banner:
+  image:
+    location: banner.png
+
+spring:
+  jpa:
+    database: MYSQL
+    hibernate:
+      dialect:  org.hibernate.dialect.MySQL5Dialect
+      ddl-auto: validate
+      naming_strategy: org.hibernate.cfg.EJB3NamingStrategy
+    show-sql: false
