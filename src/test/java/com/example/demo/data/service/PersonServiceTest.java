@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,7 +21,7 @@ import com.example.demo.exception.NotFoundException;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@TestPropertySource("classpath:/application-test.yml")
+@TestPropertySource("classpath:/application-test.properties")
 public class PersonServiceTest {
 
 	@Autowired
