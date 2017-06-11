@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.annotation.Timed;
 import com.example.demo.data.bean.Person;
 import com.example.demo.data.service.PersonService;
 
@@ -26,6 +27,7 @@ public class PersonController {
 	@Autowired
 	private PersonService personService;
 	
+	@Timed
     @ApiOperation(httpMethod = "GET", value = "findAll", nickname = "findAll")
 	@RequestMapping(path = "/all", method = RequestMethod.GET, 
 			produces = {MediaType.APPLICATION_JSON_UTF8_VALUE} )
@@ -34,6 +36,7 @@ public class PersonController {
 		return personService.findAll();
 	}
 	 
+	@Timed
 	@RequestMapping(path="/lastname/{lastname}", method = RequestMethod.GET, 
 			produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseStatus(HttpStatus.OK)
@@ -41,6 +44,7 @@ public class PersonController {
 		return personService.findByLastName(lastName);
 	}
 	
+	@Timed
 	@RequestMapping(path="/new", method = RequestMethod.POST, 
 			consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
@@ -48,12 +52,14 @@ public class PersonController {
 		personService.createNewPerson(newPerson);
 	}
 	
+	@Timed
 	@RequestMapping(path="/id/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
 	public void deletePerson(@PathVariable Long id) {
 		personService.deletePerson(id);
 	}
 	
+	@Timed
 	@RequestMapping(path="/update", method = RequestMethod.PATCH,
 			consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseStatus(HttpStatus.OK)

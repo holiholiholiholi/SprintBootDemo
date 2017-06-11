@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.annotation.Timed;
 import com.example.demo.data.bean.Person;
 import com.example.demo.data.repository.PersonRepository;
 import com.example.demo.exception.BadRequestException;
@@ -17,23 +18,28 @@ public class PersonService {
 	@Autowired 
 	private PersonRepository personRepository;
 	
+	@Timed
 	public List<Person> findAll() {
 		return personRepository.findAll();
 	}
 	
+	@Timed
 	public List<Person> findByLastName(final String lastName)  {
 		return personRepository.findByLastName(lastName);
 	}
 	
+	@Timed
 	public Person createNewPerson(final Person person) {
 		return personRepository.save(person);
 	}
 	
+	@Timed
 	public void deletePerson(final Long id) {
 		personRepository.delete(id);
 	}
 	
 	@Transactional
+	@Timed
 	public Person updatePerson(final Person person) {
 		checkIfPersonIdIsNull(person);
 		
